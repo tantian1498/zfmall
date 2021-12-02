@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" ref="wrapper">
     <div class="content">
       <slot></slot>
     </div>
@@ -12,10 +12,19 @@
   export default {
     name: 'Scroll',
     data() {
-                       
+      return {
+        scroll: null
+      }          
     },
     mounted() {
-
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        click: true
+      })
+    },
+    methods: {
+      scrollTo(x, y, time=300) {
+        this.scroll && this.scroll.scrollTo(x, y, time)
+      },
     }
 
   }

@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll>
+    <scroll class="content" ref="scroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <featue-view/>
@@ -10,7 +10,7 @@
                   @tabClick="tabClick"/>
       <goods-list :goods="goods[currentType].list"/>
     </scroll>
-
+    <back-top @click.native="backClick"/>
     <ul>
       <li>列表</li>
       <li>列表</li>
@@ -125,6 +125,7 @@
   import TabControl from '../../components/content/tabControl/TabControl.vue'
   import GoodsList from '../../components/content/goods/GoodsList.vue'
   import Scroll from '@/components/common/scroll/Scroll'
+  import BackTop from '@/components/content/backTop/BackTop'
 
   export default {
     name: "Home",
@@ -135,7 +136,8 @@
       FeatueView,
       TabControl,
       GoodsList,
-      Scroll  
+      Scroll,
+      BackTop,
     },
     data() {
       return {
@@ -185,15 +187,21 @@
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page +=1
         })
+      },
+
+      backClick() {
+        console.log('backClick');
+        this.$refs.scroll.scrollTo(0, 0)
       }
     }
   }
 </script>
 
 <style scoped>
-  /* #home {
+  #home {
     padding-top: 44px;
-  } */
+    height: 100vh;
+  }
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
@@ -210,5 +218,11 @@
     top: 44px;
     background-color: #fff;
     z-index: 9;
+  }
+
+  .content {
+    height: calc(100% - 93px);
+    overflow: hidden;
+    margin-top: 44px;
   }
 </style>
